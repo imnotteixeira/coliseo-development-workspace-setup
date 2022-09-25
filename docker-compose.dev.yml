@@ -1,0 +1,26 @@
+version: "3"
+services:
+    web-server-dev:
+        build:
+            context: .
+            dockerfile: ./coliseo-web/webserver.dockerfile
+            target: image-dev
+            args:
+                - PORT=8081
+                - WEBSERVER_DIR=./coliseo-web
+        environment:
+            - NODE_ENV=development
+            - ASSETS_PORT=8081
+        ports:
+            - "8081:8081"
+        volumes:
+            - coliseo_engine_dependency:/root/.yalc/packages/@coliseo/engine:ro
+    coliseo-engine-dev:
+        build:
+            context: ./coliseo
+        environment:
+            - NODE_ENV=development
+        volumes:
+            - coliseo_engine_dependency:/root/.yalc/packages/@coliseo/engine:rw
+volumes:
+  coliseo_engine_dependency:
